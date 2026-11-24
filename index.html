@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IV Anesthetic Agents Simulator | Dr. Hussam Kareem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo for Arabic & Inter for English -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        arabic: ['Cairo', 'sans-serif'],
+                        english: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .en-text {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+            unicode-bidi: isolate;
+        }
+        .en-block {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        @keyframes pulseBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+        }
+        .animate-heartbeat {
+            animation: pulseBeat 1s infinite ease-in-out;
+        }
+        .tab-content {
+            animation: fadeIn 0.25s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center justify-between py-3 gap-3">
+                <!-- Brand & Lecture Info -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 to-sky-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 shrink-0">
+                        <i data-lucide="activity" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h1 class="text-base sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                                <span class="en-text">IV Anesthetic Agents</span> <span class="text-indigo-600 dark:text-indigo-400">Simulator</span>
+                            </h1>
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300">
+                                محرك توليد لحظي ∞
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                            محاضرة: <span class="font-bold text-slate-700 dark:text-slate-300 en-text">Dr. Hussam Kareem</span> (Anesthesiologist)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Controls: Arabic Explanations Toggle & Dark Mode -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button id="toggleArabicBtn" onclick="toggleArabicMode()" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800 transition-all shadow-sm">
+                        <i data-lucide="languages" class="w-4 h-4"></i>
+                        <span id="arabicBtnLabel">إخفاء الشرح العربي</span>
+                    </button>
+
+                    <button onclick="toggleDarkMode()" aria-label="Toggle Theme" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all">
+                        <i id="themeIcon" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5 Main Navigation Tabs -->
+            <nav class="flex space-x-1 space-x-reverse overflow-x-auto pb-2 pt-1 no-scrollbar" aria-label="Tabs">
+                <button onclick="switchTab('foundations')" id="tab-foundations" class="nav-tab flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-indigo-600 text-white shadow-sm">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                    <span>1. الأساسيات والتصنيف</span>
+                </button>
+                <button onclick="switchTab('formulary')" id="tab-formulary" class="nav-tab flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+                    <i data-lucide="syringe" class="w-4 h-4"></i>
+                    <span>2. مختبر الأدوية والجرعات</span>
+                </button>
+                <button onclick="switchTab('systems')" id="tab-systems" class="nav-tab flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+                    <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                    <span>3. التأثير على أجهزة الجسم</span>
+                </button>
+                <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-tab flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+                    <i data-lucide="monitor-heart" class="w-4 h-4"></i>
+                    <span>4. محاكي صالة العمليات</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-tab flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>5. بنك الأسئلة اللحظي</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: FOUNDATIONS, CLASSIFICATION & IDEAL PROPERTIES     -->
+        <!-- ========================================================= -->
+        <section id="view-foundations" class="tab-content space-y-8">
+
+            <!-- Definition Card -->
+            <div class="bg-gradient-to-l from-indigo-50 to-sky-50 dark:from-indigo-950/40 dark:to-slate-900 border border-indigo-200 dark:border-indigo-800/60 rounded-2xl p-5 sm:p-6 shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="p-3 rounded-2xl bg-indigo-600/15 text-indigo-600 dark:text-indigo-400 shrink-0 mt-1">
+                        <i data-lucide="book-open" class="w-7 h-7"></i>
+                    </div>
+                    <div class="space-y-2.5 flex-1">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+                                تعريف أدوية التخدير الوريدية <span class="en-text text-indigo-700 dark:text-indigo-400 text-base font-bold">(Intravenous Anesthetic Agents)</span>
+                            </h2>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-200">
+                                الأساس الفارماكولوجي
+                            </span>
+                        </div>
+                        <div class="en-block text-sm sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed bg-white/80 dark:bg-slate-950/60 p-4 rounded-xl border border-indigo-200/50 dark:border-slate-800 font-medium">
+                            <strong>Intravenous anesthetic agents</strong> are drugs administered via the <strong>intravenous route</strong> to produce <strong>hypnosis, sedation, anesthesia, and/or amnesia</strong> with <strong>rapid onset</strong> and <strong>relatively short duration of action</strong>.
+                        </div>
+                        <p class="ar-explain text-sm text-slate-700 dark:text-slate-300 leading-relaxed pt-1">
+                            <strong>الشرح والتوضيح:</strong> أدوية التخدير الوريدية هي أدوية تُعطى عبر الوريد (<span class="en-text font-semibold">IV route</span>) لإحداث التنويم (<span class="en-text">Hypnosis</span>)، التركين (<span class="en-text">Sedation</span>)، التخدير العام (<span class="en-text">Anesthesia</span>)، و/أو فقدان الذاكرة (<span class="en-text">Amnesia</span>)، وتتميز بـ <strong>بدء مفعول سريع (<span class="en-text">rapid onset</span>)</strong> و<strong>مدة تأثير قصيرة نسبياً (<span class="en-text">short duration</span>)</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Classifications of IV Anesthetic Agents -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-sky-100 dark:bg-sky-900/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                        <i data-lucide="git-fork" class="w-5 h-5"></i>
+                    </span>
+                    تصنيف أدوية التخدير الوريدية <span class="en-text text-sky-600 dark:text-sky-400 text-base">(Classification of IV Anesthetic Agents)</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="classificationGrid"></div>
+            </div>
+
+            <!-- 5 Ideal Properties of IV Anesthetic Agents -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <h2 class="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                            <i data-lucide="award" class="w-5 h-5"></i>
+                        </span>
+                        الخصائص المثالية الخمسة <span class="en-text text-emerald-600 dark:text-emerald-400 text-base">(Ideal Properties of IV Anesthetic Agents)</span>
+                    </h2>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">مهم جداً في أسئلة الامتحان (خصوصاً صيغة EXCEPT)</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="idealPropertiesGrid"></div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: DRUGS FORMULARY & LIVE DOSE CALCULATOR             -->
+        <!-- ========================================================= -->
+        <section id="view-formulary" class="tab-content hidden space-y-6">
+            
+            <!-- Top Control Bar: Live Weight Calculator + Filter -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    
+                    <!-- Live Weight Dose Calculator -->
+                    <div class="flex flex-wrap items-center gap-3 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800/70 px-4 py-3 rounded-2xl">
+                        <div class="flex items-center gap-2 text-indigo-700 dark:text-indigo-300 font-bold text-sm">
+                            <i data-lucide="calculator" class="w-5 h-5"></i>
+                            <span>وزن المريض لحساب الجرعات لحظياً:</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="patientWeightInput" value="70" min="10" max="150" oninput="renderDrugs()" class="w-24 px-3 py-1.5 rounded-xl border border-indigo-300 dark:border-indigo-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-extrabold text-center en-text focus:ring-2 focus:ring-indigo-500 outline-none" />
+                            <span class="text-sm font-bold text-slate-600 dark:text-slate-300 en-text">kg</span>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="setQuickWeight(18)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-400">طفل 18kg</button>
+                            <button onclick="setQuickWeight(55)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-400">55kg</button>
+                            <button onclick="setQuickWeight(70)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-400">70kg</button>
+                            <button onclick="setQuickWeight(90)" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-400">90kg</button>
+                        </div>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="relative flex-1 max-w-md">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="drugSearchInput" oninput="renderDrugs()" placeholder="ابحث باسم الدواء، المستقبل، الأيض (مثل: GABA-A, NMDA, 11β-hydroxylase, Porphyria)..." class="w-full pr-10 pl-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+                    </div>
+                </div>
+
+                <!-- Agent Quick Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    <button onclick="filterDrug('ALL')" data-drug="ALL" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white dark:bg-indigo-600 whitespace-nowrap transition-all">
+                        جميع الأدوية (5)
+                    </button>
+                    <button onclick="filterDrug('propofol')" data-drug="propofol" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        1. Propofol
+                    </button>
+                    <button onclick="filterDrug('thiopental')" data-drug="thiopental" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        2. Thiopental Sodium
+                    </button>
+                    <button onclick="filterDrug('etomidate')" data-drug="etomidate" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        3. Etomidate
+                    </button>
+                    <button onclick="filterDrug('ketamine')" data-drug="ketamine" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        4. Ketamine
+                    </button>
+                    <button onclick="filterDrug('midazolam')" data-drug="midazolam" class="drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        5. Benzodiazepines (Midazolam)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Drug Profile Cards -->
+            <div id="drugsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: SYSTEM-WISE EFFECTS MATRIX (ALL 6 BODY SYSTEMS)    -->
+        <!-- ========================================================= -->
+        <section id="view-systems" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+                            تأثير أدوية التخدير الوريدية على أجهزة الجسم الستة <span class="en-text text-indigo-600 dark:text-indigo-400 text-sm">(System-Wise Effects)</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            فهم هذه التأثيرات أساسي لاختيار الدواء الآمن وتوقع المضاعفات في كل مريض.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- System Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    <button onclick="filterSystem('ALL')" data-sys="ALL" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white dark:bg-indigo-600 whitespace-nowrap transition-all">
+                        جميع الأجهزة (6)
+                    </button>
+                    <button onclick="filterSystem('CNS')" data-sys="CNS" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        1. CNS (الجهاز العصبي)
+                    </button>
+                    <button onclick="filterSystem('CVS')" data-sys="CVS" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        2. CVS (القلب والأوعية)
+                    </button>
+                    <button onclick="filterSystem('RESP')" data-sys="RESP" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        3. Respiratory (التنفسي)
+                    </button>
+                    <button onclick="filterSystem('GIT')" data-sys="GIT" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        4. GIT (الهضمي)
+                    </button>
+                    <button onclick="filterSystem('RENAL')" data-sys="RENAL" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        5. Renal (الكلوي)
+                    </button>
+                    <button onclick="filterSystem('HEPATIC')" data-sys="HEPATIC" class="sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all">
+                        6. Hepatic (الكبدي)
+                    </button>
+                </div>
+            </div>
+
+            <!-- System Cards Grid (Mobile-friendly stacked cards instead of cramped wide tables) -->
+            <div id="systemsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 4: REAL-TIME INDUCTION CLINICAL SIMULATOR             -->
+        <!-- ========================================================= -->
+        <section id="view-simulator" class="tab-content hidden space-y-6">
+            
+            <!-- Simulator Top Bar -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="stethoscope" class="w-6 h-6 text-indigo-600"></i>
+                        <span>محاكي صالة العمليات (Induction Simulator)</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                        يُولّد مريضاً جديداً بوزن وعمر وحالة مرضية مختلفة في كل ضغطة زر لاختبار اختيارك لدواء بدء التخدير (Induction Agent).
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 px-3.5 py-2 rounded-xl text-center">
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-bold">الحالات الناجحة</span>
+                        <span id="simScoreBadge" class="text-sm font-extrabold text-emerald-600 dark:text-emerald-400 en-text">0</span>
+                    </div>
+                    <button onclick="generateProceduralPatient()" class="px-4 py-2.5 rounded-xl bg-gradient-to-l from-indigo-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95">
+                        <i data-lucide="shuffle" class="w-4 h-4"></i>
+                        <span>توليد مريض جديد عشوائياً</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Patient File & Live ICU/OR Monitor -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-extrabold text-lg">
+                                    <i data-lucide="user-plus" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span id="simCaseTag" class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 en-text">OR CASE</span>
+                                    <h3 id="simPatientName" class="text-base font-extrabold text-slate-900 dark:text-white mt-0.5">--</h3>
+                                </div>
+                            </div>
+                            <span id="simASA" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-extrabold en-text">ASA II</span>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="bg-slate-50 dark:bg-slate-800/70 p-2.5 rounded-xl">
+                                <span class="text-[11px] text-slate-500 block">العمر / الجنس</span>
+                                <span id="simAgeSex" class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-slate-100">--</span>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-800/70 p-2.5 rounded-xl">
+                                <span class="text-[11px] text-slate-500 block">الوزن <span class="en-text">(Weight)</span></span>
+                                <span id="simWeight" class="text-xs sm:text-sm font-extrabold text-indigo-600 dark:text-indigo-400 en-text">-- kg</span>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-800/70 p-2.5 rounded-xl">
+                                <span class="text-[11px] text-slate-500 block">العملية</span>
+                                <span id="simSurgeryType" class="text-xs font-extrabold text-slate-800 dark:text-slate-100">--</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="text-xs font-bold text-slate-500 dark:text-slate-400">الحالة السريرية <span class="en-text">(Clinical Scenario)</span>:</div>
+                            <div id="simScenarioEn" class="en-block text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-950/60 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-800 leading-relaxed"></div>
+                            <div id="simScenarioAr" class="ar-explain text-sm text-slate-700 dark:text-slate-300 bg-indigo-50/50 dark:bg-indigo-950/20 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/40 leading-relaxed"></div>
+                        </div>
+                    </div>
+
+                    <!-- Live OR Monitor -->
+                    <div class="bg-slate-900 text-slate-100 rounded-2xl border border-slate-700 p-4 shadow-md space-y-3">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span class="text-xs font-extrabold tracking-wider uppercase en-text text-emerald-400">OR PHYSIOLOGY MONITOR</span>
+                            </div>
+                            <span id="monitorStatusBadge" class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">Pre-Induction (قبل الحقن)</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 en-block">
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <div class="flex items-center justify-between text-[11px] text-emerald-400 font-bold">
+                                    <span>HR (bpm)</span>
+                                    <i data-lucide="heart" class="w-3.5 h-3.5 animate-heartbeat"></i>
+                                </div>
+                                <div id="monHR" class="text-xl font-extrabold text-emerald-400 mt-1">84</div>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <div class="text-[11px] text-sky-400 font-bold">BP (mmHg)</div>
+                                <div id="monBP" class="text-xl font-extrabold text-sky-400 mt-1">120/78</div>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <div class="text-[11px] text-amber-400 font-bold">SpO₂ (%)</div>
+                                <div id="monSpO2" class="text-xl font-extrabold text-amber-400 mt-1">98%</div>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                                <div class="text-[11px] text-purple-400 font-bold">ICP / CBF</div>
+                                <div id="monICP" class="text-sm font-extrabold text-purple-400 mt-1">Normal</div>
+                            </div>
+                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 col-span-2">
+                                <div class="text-[11px] text-rose-400 font-bold">Airway / Hemodynamics</div>
+                                <div id="monAirway" class="text-sm font-extrabold text-rose-400 mt-1">Stable</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Decision Options & Feedback -->
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm space-y-4">
+                        <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="syringe" class="w-5 h-5 text-indigo-600"></i>
+                            <span id="simQuestionPrompt">اختر الدواء الوريدي الأنسب والجرعة الصحيحة لهذا المريض:</span>
+                        </h3>
+                        <div id="simOptionsList" class="space-y-3"></div>
+                    </div>
+
+                    <!-- Outcome Feedback Panel -->
+                    <div id="simFeedbackPanel" class="hidden rounded-2xl border p-5 sm:p-6 shadow-sm space-y-3 transition-all">
+                        <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <div class="flex items-center gap-2.5">
+                                <div id="simFeedbackIcon" class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"></div>
+                                <div>
+                                    <h4 id="simFeedbackTitle" class="text-base sm:text-lg font-extrabold">النتيجة السريرية</h4>
+                                    <p id="simFeedbackSubtitle" class="text-xs font-semibold opacity-80">تحليل الاستجابة الفسيولوجية</p>
+                                </div>
+                            </div>
+                            <button onclick="generateProceduralPatient()" class="px-4 py-2 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs sm:text-sm font-bold hover:opacity-90 transition-all flex items-center gap-1.5">
+                                <span>توليد مريض جديد</span>
+                                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div id="simFeedbackEn" class="en-block text-sm leading-relaxed p-3.5 rounded-xl bg-white/80 dark:bg-slate-950/60 border border-black/5 dark:border-white/10"></div>
+                        <div id="simFeedbackAr" class="ar-explain text-sm leading-relaxed pt-1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 5: REAL-TIME PROCEDURAL QUESTION GENERATOR            -->
+        <!-- ========================================================= -->
+        <section id="view-quiz" class="tab-content hidden space-y-6">
+            
+            <!-- Real-Time Engine Control Header -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-6 h-6 text-indigo-600"></i>
+                                <span>بنك الأسئلة اللحظي المتجدد (Real-Time Procedural Engine)</span>
+                            </h2>
+                            <span id="sessionSeedBadge" class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 en-text">
+                                LIVE SEED: #0000
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                            يُبنى كل سؤال لحظياً بأوزان وجرعات وصياغات وحالات سريرية مختلفة تماماً في كل تحديث للصفحة أو عند الضغط على الزر.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 px-4 py-1.5 rounded-xl text-center">
+                            <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-bold">النتيجة اللحظية</span>
+                            <span id="quizScoreDisplay" class="text-base font-extrabold text-indigo-700 dark:text-indigo-300 en-text">0 / 15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generator Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-400">عدد الأسئلة المولّدة:</span>
+                        <select id="questionCountSelect" onchange="generateFreshExam()" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs sm:text-sm font-bold outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="10">10 أسئلة متنوعة</option>
+                            <option value="15" selected>15 سؤالاً شاملاً</option>
+                            <option value="25">25 سؤالاً مكثفاً</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateFreshExam()" class="px-5 py-2.5 rounded-xl bg-gradient-to-l from-indigo-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white text-xs sm:text-sm font-extrabold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span>توليد اختبار جديد بصياغات وأرقام مختلفة</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Generated Questions List -->
+            <div id="quizQuestionsContainer" class="space-y-5"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-4 px-4 mt-10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <div>
+                محاكي مادة التخدير — محاضرة <span class="en-text font-bold text-slate-700 dark:text-slate-300">IV Anesthetic Agents</span> للدكتور حسام كريم (<span class="en-text">Dr. Hussam Kareem</span>)
+            </div>
+            <div>
+                مدعوم بمحرك التوليد اللحظي غير المتكرر (<span class="en-text">Real-Time Procedural Engine</span>)
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT KNOWLEDGE BASE & PROCEDURAL ENGINE             -->
+    <!-- ========================================================= -->
+    <script>
+        let showArabic = true;
+        let currentDrugFilter = 'ALL';
+        let currentSystemFilter = 'ALL';
+        let currentSimCase = null;
+        let simSolvedCount = 0;
+        let activeQuestions = [];
+        let quizAnswers = {};
+
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function pickRandom(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        // =========================================================
+        // 1. TAB 1 DATA: CLASSIFICATION & IDEAL PROPERTIES
+        // =========================================================
+        const classificationsData = [
+            {
+                num: '01', color: 'indigo', icon: 'moon',
+                enTitle: 'Hypnotic / Induction Agents',
+                enDrugs: 'Propofol, Thiopental Sodium, and Etomidate',
+                arTitle: 'أدوية التنويم وبدء التخدير',
+                arDesc: 'تُستخدم لإدخال المريض في النوم العميق (Induction) وبعضها لإدامة التخدير.'
+            },
+            {
+                num: '02', color: 'amber', icon: 'sparkles',
+                enTitle: 'Dissociative Anesthetic',
+                enDrugs: 'Ketamine',
+                arTitle: 'المخدر الانفصالي',
+                arDesc: 'يفصل المريض عن البيئة المحيطة مع الحفاظ على التنفس ومنعكسات مجرى الهواء وتسكين قوي.'
+            },
+            {
+                num: '03', color: 'sky', icon: 'smile',
+                enTitle: 'Benzodiazepines',
+                enDrugs: 'Midazolam, Diazepam',
+                arTitle: 'البنزوديازيبينات',
+                arDesc: 'تُستخدم لإزالة القلق (Anxiolysis)، التركين الواعي، وإحداث فقدان الذاكرة التقدمي (Amnesia).'
+            },
+            {
+                num: '04', color: 'rose', icon: 'shield-plus',
+                enTitle: 'Opioids (Adjuncts)',
+                enDrugs: 'Fentanyl, Morphine, and Remifentanil',
+                arTitle: 'المخدرات الأفيونية (عوامل مساعدة)',
+                arDesc: 'عوامل مساعدة لتوفير تسكين قوي للألم وتقليل الاستجابة الودية للتنبيب والجراحة.'
+            }
+        ];
+
+        const idealPropertiesData = [
+            { num: '1', icon: 'zap', en: 'Rapid onset of action', ar: 'بدء مفعول سريع جداً (خلال ثوانٍ).' },
+            { num: '2', icon: 'fast-forward', en: 'Short duration and rapid recovery', ar: 'مدة تأثير قصيرة وإفاقة سريعة.' },
+            { num: '3', icon: 'heart-pulse', en: 'Minimal cardiovascular and respiratory depression', ar: 'أقل قدر ممكن من تثبيط القلب والتنفس.' },
+            { num: '4', icon: 'shield-check', en: 'No toxic metabolites', ar: 'عدم وجود مستقلبات سامة في الجسم.' },
+            { num: '5', icon: 'scale', en: 'High therapeutic index', ar: 'مؤشر علاجي مرتفع (هامش أمان واسع).' }
+        ];
+
+        // =========================================================
+        // 2. TAB 2 DATA: ALL 5 DETAILED IV DRUG PROFILES
+        // =========================================================
+        const drugsData = [
+            {
+                id: 'propofol', color: 'indigo',
+                name: '1. Propofol', arName: 'بروبوفول (الحليب المخدر)',
+                chemClass: 'Alkyl phenol derivative',
+                doseCalc: (w) => `Induction (1.5–2.5 mg/kg): ${(1.5 * w).toFixed(0)}–${(2.5 * w).toFixed(0)} mg | Maint: ${(100 * w).toFixed(0)}–${(200 * w).toFixed(0)} µg/min | Sed: ${(25 * w).toFixed(0)}–${(75 * w).toFixed(0)} µg/min`,
+                rows: [
+                    { k: 'Chemical Class', v: 'Alkyl phenol derivative', ar: 'مشتق ألكيل فينول (Alkyl phenol derivative).' },
+                    { k: 'Mechanism of Action', v: 'Primarily acts on GABA-A receptors in the CNS; increases chloride ion conductance causing neuronal hyperpolarization; enhances inhibitory neurotransmission & suppresses excitatory pathways; also reduces NMDA receptor activity and sodium channel function.', ar: 'يعمل أساساً على مستقبلات GABA-A في الدماغ؛ يزيد نفاذية أيونات الكلوريد مسبباً فرط استقطاب الخلية العصبية (Hyperpolarization)؛ يعزز التثبيط العصبي ويقلل نشاط مستقبلات NMDA وقنوات الصوديوم.' },
+                    { k: 'Pharmacokinetics', v: 'Highly lipid soluble → rapid onset (30–40 seconds); rapid redistribution from brain to muscle and fat; hepatic metabolism with inactive metabolites.', ar: 'عالي الذوبان في الدهون ← بدء سريع (30–40 ثانية)؛ ينتهي مفعوله بإعادة التوزيع السريعة من الدماغ إلى العضلات والدهون؛ يستقلب في الكبد إلى مستقلبات غير نشطة.' },
+                    { k: 'Standard Doses', v: 'Induction: 1.5–2.5 mg/kg IV (adult) | Maintenance infusion: 100–200 µg/kg/min | Sedation: 25–75 µg/kg/min.', ar: 'جرعة بدء التخدير: 1.5–2.5 ملغ/كغ وريدياً | الإدامة: 100–200 ميكروغرام/كغ/دقيقة | التركين: 25–75 ميكروغرام/كغ/دقيقة.' },
+                    { k: 'Clinical Uses', v: 'Induction and maintenance of general anesthesia (TIVA), ICU sedation, procedural sedation.', ar: 'بدء وإدامة التخدير العام، تركين مرضى العناية المركزة (ICU)، والتركين للإجراءات القصيرة.' },
+                    { k: 'Contraindications', v: 'Allergy to egg or soy (relative); Hemodynamic instability.', ar: 'موانع الاستعمال: حساسية البيض أو الصويا (مانع نسبي)؛ وعدم استقرار الدورة الدموية (هبوط الضغط/الصدمة).' }
+                ]
+            },
+            {
+                id: 'thiopental', color: 'amber',
+                name: '2. Thiopental Sodium', arName: 'ثيوبنتال الصوديوم',
+                chemClass: 'Barbiturate',
+                doseCalc: (w) => `Induction (3–5 mg/kg IV): ${(3 * w).toFixed(0)} – ${(5 * w).toFixed(0)} mg IV`,
+                rows: [
+                    { k: 'Chemical Class', v: 'Barbiturate', ar: 'باربيتورات (Barbiturate).' },
+                    { k: 'Mechanism of Action', v: 'Enhances GABA-A receptor activity; prolongs the duration of chloride channel opening; direct CNS depression at high doses; decreases cerebral metabolic rate (CMRO₂) and intracranial pressure (ICP).', ar: 'يعزز نشاط مستقبلات GABA-A؛ يطيل مدة انفتاح قنوات الكلوريد (Duration)؛ يثبط الجهاز العصبي مباشرة بالجرعات العالية؛ ويخفض معدل الأيض الدماغي والضغط داخل القحف (ICP).' },
+                    { k: 'Pharmacokinetics', v: 'Rapid onset (20–30 seconds); ultra-short acting due to redistribution; hepatic metabolism (accumulates with repeated doses).', ar: 'بدء سريع جداً (20–30 ثانية)؛ فائق القصر بسبب إعادة التوزيع؛ يستقلب في الكبد (يتراكم في الجسم مع الجرعات المتكررة).' },
+                    { k: 'Standard Dose', v: 'Induction: 3–5 mg/kg IV.', ar: 'جرعة بدء التخدير: 3–5 ملغ/كغ وريدياً.' },
+                    { k: 'Clinical Uses', v: 'Induction of anesthesia; Neuroanesthesia (↓ ICP).', ar: 'بدء التخدير العام؛ وتخدير جراحة الأعصاب والدماغ (لأنه يخفض الضغط داخل القحف ICP).' },
+                    { k: 'Contraindications', v: 'Porphyria and Severe asthma.', ar: 'موانع الاستعمال: مرض البورفيريا (Porphyria) والربو الشديد (Severe asthma).' }
+                ]
+            },
+            {
+                id: 'etomidate', color: 'emerald',
+                name: '3. Etomidate', arName: 'إيتوميديت',
+                chemClass: 'Imidazole derivative',
+                doseCalc: (w) => `Induction (0.2–0.3 mg/kg IV): ${(0.2 * w).toFixed(1)} – ${(0.3 * w).toFixed(1)} mg IV`,
+                rows: [
+                    { k: 'Chemical Class', v: 'Imidazole derivative', ar: 'مشتق إيميدازول (Imidazole derivative).' },
+                    { k: 'Mechanism of Action', v: 'Modulates GABA-A receptors; minimal effect on sympathetic tone; inhibits 11β-hydroxylase → suppresses cortisol synthesis.', ar: 'يُعدّل مستقبلات GABA-A؛ تأثيره ضئيل جداً على الجهاز العصبي الودي (يحافظ على استقرار الضغط والنبض)؛ يثبط إنزيم 11β-hydroxylase في الغدة الكظرية مما يثبط تصنيع الكورتيزول.' },
+                    { k: 'Pharmacokinetics', v: 'Rapid onset (30–60 seconds); short duration due to redistribution.', ar: 'بدء سريع (30–60 ثانية)؛ مدة قصيرة بسبب إعادة التوزيع.' },
+                    { k: 'Standard Dose', v: 'Induction: 0.2–0.3 mg/kg IV.', ar: 'جرعة بدء التخدير: 0.2–0.3 ملغ/كغ وريدياً.' },
+                    { k: 'Clinical Uses', v: 'Induction in hemodynamically unstable patients; Cardiac patients.', ar: 'الخيار المفضل لبدء التخدير في المرضى غير المستقرين هيموديناميكياً (الصدمة/هبوط الضغط) ومرضى القلب.' }
+                ]
+            },
+            {
+                id: 'ketamine', color: 'rose',
+                name: '4. Ketamine', arName: 'كيتامين',
+                chemClass: 'Phencyclidine derivative',
+                doseCalc: (w) => `Induction (1–2 mg/kg): ${(1 * w).toFixed(0)}–${(2 * w).toFixed(0)} mg IV | Analgesia (0.1–0.5 mg/kg): ${(0.1 * w).toFixed(1)}–${(0.5 * w).toFixed(1)} mg IV`,
+                rows: [
+                    { k: 'Chemical Class', v: 'Phencyclidine derivative', ar: 'مشتق فينسيكليدين (Phencyclidine derivative).' },
+                    { k: 'Mechanism of Action', v: 'NMDA receptor antagonist; produces dissociative anesthesia; increases sympathetic nervous system activity; preserves airway reflexes.', ar: 'مضاد لمستقبلات NMDA؛ يُحدث التخدير الانفصالي (Dissociative anesthesia)؛ ينشط الجهاز العصبي الودي (يرفع الضغط والنبض)؛ ويحافظ على منعكسات مجرى الهواء والتنفس التلقائي.' },
+                    { k: 'Pharmacokinetics', v: 'Onset: 30–60 seconds IV; hepatic metabolism to norketamine (active metabolite).', ar: 'بدء المفعول: 30–60 ثانية وريدياً؛ يستقلب في الكبد إلى نوركيتامين (Norketamine) وهو مستقلب نشط.' },
+                    { k: 'Standard Doses', v: 'Induction: 1–2 mg/kg IV | Analgesia: 0.1–0.5 mg/kg IV.', ar: 'جرعة بدء التخدير: 1–2 ملغ/كغ وريدياً | جرعة التسكين: 0.1–0.5 ملغ/كغ وريدياً.' },
+                    { k: 'Clinical Uses', v: 'Trauma patients; Asthma (powerful bronchodilator); Pediatric anesthesia.', ar: 'مرضى الحوادث والصدمات (Trauma)؛ مرضى الربو (موسع قصبات قوي)؛ وتخدير الأطفال.' }
+                ]
+            },
+            {
+                id: 'midazolam', color: 'sky',
+                name: '5. Benzodiazepines (Midazolam)', arName: 'البنزوديازيبينات (ميدازولام)',
+                chemClass: 'Benzodiazepine',
+                doseCalc: (w) => `Sedation (0.02–0.1 mg/kg IV): ${(0.02 * w).toFixed(1)}–${(0.1 * w).toFixed(1)} mg | Premedication: 1–2 mg IV (adult)`,
+                rows: [
+                    { k: 'Drug Class', v: 'Benzodiazepine (e.g., Midazolam, Diazepam)', ar: 'بنزوديازيبين (مثل ميدازولام وديازيبام).' },
+                    { k: 'Mechanism of Action', v: 'Enhance GABA-A receptor affinity; increase frequency of chloride channel opening; produce anxiolysis, amnesia, and sedation.', ar: 'يزيد ألفة مستقبلات GABA-A؛ يزيد تكرار انفتاح قنوات الكلوريد (Frequency)؛ ويُحدث إزالة القلق، فقدان الذاكرة، والتركين.' },
+                    { k: 'Standard Doses', v: 'Sedation: 0.02–0.1 mg/kg IV | Premedication: 1–2 mg IV (adult).', ar: 'التركين: 0.02–0.1 ملغ/كغ وريدياً | التحضير قبل التخدير: 1–2 ملغ وريدياً للبالغين.' },
+                    { k: 'Advantages', v: 'Anxiolysis; Anterograde amnesia.', ar: 'المزايا: إزالة القلق وفقدان الذاكرة التقدمي (لا يتذكر المريض أحداث ما بعد الحقن).' },
+                    { k: 'Side Effects', v: 'Respiratory depression (especially when combined with opioids).', ar: 'الآثار الجانبية: تثبيط التنفس (ويتضاعف بشكل ملحوظ عند إعطائه مع الأفيونات Opioids).' }
+                ]
+            }
+        ];
+
+        // =========================================================
+        // 3. TAB 3 DATA: SYSTEM-WISE EFFECTS (ALL 6 BODY SYSTEMS)
+        // =========================================================
+        const systemsData = [
+            {
+                id: 'CNS', icon: 'brain', color: 'indigo',
+                enTitle: '1. Central Nervous System (CNS)', arTitle: 'الجهاز العصبي المركزي',
+                items: [
+                    { drug: 'Propofol', en: 'Marked ↓ CMRO₂, ↓ CBF, ↓ ICP (neuroprotective).', ar: 'انخفاض ملحوظ في استهلاك الدماغ للأكسجين CMRO₂، وتدفق الدم للدماغ CBF، والضغط داخل القحف ICP (واقي للدماغ).' },
+                    { drug: 'Thiopental', en: 'Strong cerebral protection, ↓ ICP, anticonvulsant.', ar: 'حماية دماغية قوية، يخفض ICP، ومضاد للاختلاجات (التشنجات).' },
+                    { drug: 'Etomidate', en: '↓ CMRO₂ and ICP with minimal effect on CPP (cerebral perfusion pressure).', ar: 'يخفض CMRO₂ و ICP مع تأثير ضئيل جداً على ضغط التروية الدماغية CPP.' },
+                    { drug: 'Ketamine', en: 'Dissociative anesthesia, ↑ CBF and ↑ ICP (relative), vivid dreams.', ar: 'تخدير انفصالي، يرفع تدفق الدم للدماغ CBF والضغط داخل القحف ICP (نسبياً)، ويسبب أحلاماً يقظة واضحة.' },
+                    { drug: 'Benzodiazepines', en: 'Anxiolysis, anterograde amnesia, mild hypnosis.', ar: 'إزالة القلق، فقدان الذاكرة التقدمي، وتنويم خفيف.' }
+                ]
+            },
+            {
+                id: 'CVS', icon: 'heart', color: 'rose',
+                enTitle: '2. Cardiovascular System (CVS)', arTitle: 'الجهاز القلبي الوعائي',
+                items: [
+                    { drug: 'Propofol', en: '↓ Systemic vascular resistance (SVR), ↓ Myocardial contractility, ↓ Blood pressure (dose-dependent), blunts baroreceptor reflex → minimal tachycardia.', ar: 'يخفض المقاومة الوعائية الجهازية SVR وانقباض عضلة القلب، ويخفض ضغط الدم حسب الجرعة، ويثبط منعكس مستقبلات الضغط فلا يحدث تسرع قلب انعكاسي.' },
+                    { drug: 'Thiopental', en: '↓ Myocardial contractility, venodilation → ↓ preload, reflex tachycardia may occur.', ar: 'يقلل انقباض القلب، ويوسع الأوردة فيقل العائد الوريدي (Preload)، وقد يحدث تسرع قلب انعكاسي.' },
+                    { drug: 'Etomidate', en: 'Minimal cardiovascular depression, preserves sympathetic tone and baroreceptor reflexes — ideal for cardiac and shocked patients.', ar: 'تثبيط قلبي وعائي ضئيل جداً، يحافظ على النشاط الودي ومنعكسات الضغط — مثالي لمرضى القلب والصدمة.' },
+                    { drug: 'Ketamine', en: 'Stimulates sympathetic nervous system → ↑ Heart rate, ↑ Blood pressure, ↑ Cardiac output; myocardial depressant in catecholamine-depleted patients.', ar: 'ينشط الجهاز الودي فيرفع النبض والضغط والنتاج القلبي؛ لكنه يثبط عضلة القلب في المرضى المستنفدين للكاتيكولامينات (الصدمة المزمنة الشديدة).' },
+                    { drug: 'Benzodiazepines', en: 'Mild ↓ BP (especially with opioids), minimal direct myocardial depression.', ar: 'انخفاض طفيف في الضغط (خاصة مع الأفيونات)، وتثبيط مباشر ضئيل لعضلة القلب.' }
+                ]
+            },
+            {
+                id: 'RESP', icon: 'wind', color: 'sky',
+                enTitle: '3. Respiratory System', arTitle: 'الجهاز التنفسي',
+                items: [
+                    { drug: 'Propofol', en: 'Profound respiratory depression, apnea common after induction bolus, suppresses airway reflexes.', ar: 'تثبيط تنفسي عميق، انقطاع النفس (Apnea) شائع بعد جرعة البدء، ويثبط منعكسات مجرى الهواء (ممتاز للـ LMA).' },
+                    { drug: 'Thiopental', en: 'Significant respiratory depression, risk of apnea and bronchospasm (rare).', ar: 'تثبيط تنفسي واضح، وخطر انقطاع النفس وتشنج القصبات (نادراً).' },
+                    { drug: 'Etomidate', en: 'Less respiratory depression than propofol; apnea may still occur.', ar: 'تثبيط تنفسي أقل من البروبوفول؛ لكن انقطاع النفس قد يحدث أيضاً.' },
+                    { drug: 'Ketamine', en: 'Preserves spontaneous respiration, maintains airway reflexes, powerful bronchodilator (useful in asthma).', ar: 'يحافظ على التنفس التلقائي ومنعكسات مجرى الهواء، وموسع قصبات قوي جداً (مفيد لمرضى الربو).' },
+                    { drug: 'Benzodiazepines', en: 'Mild–moderate respiratory depression, markedly potentiated by opioids.', ar: 'تثبيط تنفسي خفيف إلى متوسط، ويتضاعف بشدة عند دمجه مع الأفيونات.' }
+                ]
+            },
+            {
+                id: 'GIT', icon: 'utensils', color: 'emerald',
+                enTitle: '4. Gastrointestinal System (GIT)', arTitle: 'الجهاز الهضمي',
+                items: [
+                    { drug: 'Ketamine', en: '↑ Salivation → risk of laryngospasm (anticholinergic recommended).', ar: 'يزيد إفراز اللعاب بشكل ملحوظ مما قد يسبب تشنج الحنجرة (Laryngospasm)، لذا يُنصح بإعطاء مضاد كولين معه.' },
+                    { drug: 'Propofol', en: 'Anti-emetic effect.', ar: 'يمتلك تأثيراً مضاداً للغثيان والتقيؤ (Anti-emetic effect).' }
+                ]
+            },
+            {
+                id: 'RENAL', icon: 'droplet', color: 'amber',
+                enTitle: '5. Renal System', arTitle: 'الجهاز الكلوي',
+                items: [
+                    { drug: 'Propofol / Thiopental', en: '↓ Renal blood flow secondary to hypotension.', ar: 'يقللان تدفق الدم إلى الكلى كنتيجة ثانوية لانخفاض ضغط الدم.' },
+                    { drug: 'Etomidate', en: 'Minimal renal effect.', ar: 'تأثير كلوى ضئيل جداً.' },
+                    { drug: 'Ketamine', en: 'Preserves renal perfusion via ↑ BP.', ar: 'يحافظ على التروية الدموية للكلى بفضل رفعه لضغط الدم.' }
+                ]
+            },
+            {
+                id: 'HEPATIC', icon: 'flask-conical', color: 'purple',
+                enTitle: '6. Hepatic System', arTitle: 'الجهاز الكبدي',
+                items: [
+                    { drug: 'Propofol', en: 'High hepatic clearance.', ar: 'تصفية كبدية عالية وسريعة.' },
+                    { drug: 'Thiopental', en: 'Accumulates with repeated doses.', ar: 'يتراكم في الجسم عند إعطاء جرعات متكررة.' },
+                    { drug: 'Ketamine', en: 'Active metabolite (norketamine).', ar: 'يُنتج مستقلباً نشطاً في الكبد يُسمى نوركيتامين (Norketamine).' }
+                ]
+            }
+        ];
+
+        // =========================================================
+        // 4. PROCEDURAL INDUCTION PATIENT SIMULATOR
+        // =========================================================
+        const maleNames = ['علي حسين', 'كريم جاسم', 'مصطفى عادل', 'أحمد سامي', 'عمر فاروق', 'طارق زياد', 'حيدر كاظم'];
+        const femaleNames = ['سارة محمود', 'زينب طارق', 'نور الهدى', 'فاطمة سالم', 'مريم خالد', 'رنا سعد', 'زهراء حميد'];
+
+        function generateProceduralPatient() {
+            const archetypes = [
+                // 1. Hemorrhagic Shock / Cardiac Instability -> Etomidate
+                () => {
+                    const age = randInt(32, 68);
+                    const weight = randInt(55, 88);
+                    const isMale = Math.random() > 0.4;
+                    const name = isMale ? pickRandom(maleNames) : pickRandom(femaleNames);
+                    const etoMin = (0.2 * weight).toFixed(1);
+                    const etoMax = (0.3 * weight).toFixed(1);
+                    return {
+                        patientName: `${name} (${age} سنة)`,
+                        ageSex: `${age}Y / ${isMale ? 'Male' : 'Female'}`,
+                        weight: `${weight} kg`,
+                        surgery: 'Emergency / Cardiac',
+                        asa: 'ASA IVE',
+                        baseline: { hr: `${randInt(118, 136)}`, bp: '82/48', spo2: '95%', icp: 'Normal', airway: 'Hypotensive / Shock' },
+                        scenarioEn: `${age}-year-old ${isMale ? 'male' : 'female'} (${weight} kg) with severe cardiac disease and hemodynamic instability (BP 82/48 mmHg) requiring rapid sequence induction.`,
+                        scenarioAr: `مريض عمره ${age} سنة (${weight} كغ) يعاني من مرض قلبي شديد وعدم استقرار في الدورة الدموية (ضغط الدم 82/48) ويحتاج بدء تخدير وريدي آمن دون هبوط حاد في الضغط.`,
+                        prompt: `ما هو الدواء الوريدي المثالي والجرعة الصحيحة لبدء التخدير لوزن ${weight} كغ؟`,
+                        options: shuffleArray([
+                            {
+                                textEn: `Etomidate ${etoMin}–${etoMax} mg IV (0.2–0.3 mg/kg)`,
+                                textAr: `إيتوميديت ${etoMin}–${etoMax} ملغ وريدياً (يحافظ على استقرار القلب والضغط)`,
+                                correct: true,
+                                vitals: { hr: '112', bp: '86/52 (Preserved)', spo2: '99%', icp: 'Reduced', airway: 'Hemodynamically Stable' },
+                                feedbackEn: `Correct! Etomidate (0.2–0.3 mg/kg = ${etoMin}–${etoMax} mg) causes minimal cardiovascular depression, preserves sympathetic tone & baroreceptor reflexes, and is ideal for cardiac and shocked patients.`,
+                                feedbackAr: `صحيح! الإيتوميديت (0.2–0.3 ملغ/كغ = ${etoMin}–${etoMax} ملغ) يسبب أقل تثبيط قلبي وعائي ويحافظ على النشاط الودي، لذا هو الخيار المثالي لمرضى القلب والصدمة.`
+                            },
+                            {
+                                textEn: `Propofol ${(2 * weight).toFixed(0)} mg IV (2 mg/kg)`,
+                                textAr: `بروبوفول ${(2 * weight).toFixed(0)} ملغ وريدياً`,
+                                correct: false,
+                                vitals: { hr: '108', bp: '54/30 (Severe Collapse!)', spo2: '94%', icp: 'Low CPP', airway: 'Cardiovascular Collapse' },
+                                feedbackEn: 'Dangerous! Propofol decreases SVR and myocardial contractility, blunts baroreceptor reflex, and is contraindicated in hemodynamic instability.',
+                                feedbackAr: 'خطر! البروبوفول يخفض المقاومة الوعائية وانقباض القلب ويثبط منعكس مستقبلات الضغط فيسبب هبوطاً حاداً في الضغط.'
+                            },
+                            {
+                                textEn: `Thiopental Sodium ${(4 * weight).toFixed(0)} mg IV (4 mg/kg)`,
+                                textAr: `ثيوبنتال الصوديوم ${(4 * weight).toFixed(0)} ملغ وريدياً`,
+                                correct: false,
+                                vitals: { hr: '142', bp: '58/32 (Shock!)', spo2: '94%', icp: 'Low CPP', airway: 'Venodilation & Hypotension' },
+                                feedbackEn: 'Unsafe in shock! Thiopental decreases myocardial contractility and causes venodilation (↓ preload), worsening hypotension.',
+                                feedbackAr: 'غير آمن في الصدمة! الثيوبنتال يقلل انقباض القلب ويوسع الأوردة فيزيد من هبوط الضغط.'
+                            }
+                        ])
+                    };
+                },
+                // 2. Severe Bronchial Asthma -> Ketamine (vs Thiopental contraindicated)
+                () => {
+                    const age = randInt(16, 45);
+                    const weight = randInt(48, 82);
+                    const isMale = Math.random() > 0.5;
+                    const name = isMale ? pickRandom(maleNames) : pickRandom(femaleNames);
+                    const ketMin = (1 * weight).toFixed(0);
+                    const ketMax = (2 * weight).toFixed(0);
+                    return {
+                        patientName: `${name} (${age} سنة)`,
+                        ageSex: `${age}Y / ${isMale ? 'Male' : 'Female'}`,
+                        weight: `${weight} kg`,
+                        surgery: 'General Surgery',
+                        asa: 'ASA III (Asthma)',
+                        baseline: { hr: '94', bp: '124/78', spo2: '94% (Wheezing)', icp: 'Normal', airway: 'Severe Asthma' },
+                        scenarioEn: `${age}-year-old patient (${weight} kg) with severe bronchial asthma and active wheezing requiring IV induction. You want a potent bronchodilator that preserves airway reflexes.`,
+                        scenarioAr: `مريض عمره ${age} سنة (${weight} كغ) مصاب بالربو القصبي الشديد مع أزيز صدري، ويحتاج بدء تخدير بدواء يعمل كموسع قصبات قوي ويحافظ على منعكسات مجرى الهواء.`,
+                        prompt: 'أي دواء تختار لبدء التخدير وما هي الملاحظة المصاحبة له؟',
+                        options: shuffleArray([
+                            {
+                                textEn: `Ketamine ${ketMin}–${ketMax} mg IV (1–2 mg/kg) + Anticholinergic`,
+                                textAr: `كيتامين ${ketMin}–${ketMax} ملغ وريدياً (موسع قصبات قوي + مضاد كولين لتقليل اللعاب)`,
+                                correct: true,
+                                vitals: { hr: '108', bp: '138/86', spo2: '99% (Bronchodilated)', icp: 'Slightly ↑', airway: 'Reflexes Preserved' },
+                                feedbackEn: `Excellent! Ketamine (1–2 mg/kg = ${ketMin}–${ketMax} mg) is a powerful bronchodilator useful in asthma and preserves spontaneous respiration & airway reflexes (give anticholinergic to prevent hypersalivation/laryngospasm).`,
+                                feedbackAr: `ممتاز! الكيتامين (1–2 ملغ/كغ = ${ketMin}–${ketMax} ملغ) موسع قصبات قوي مفيد جداً في الربو ويحافظ على التنفس ومنعكسات مجرى الهواء (مع إعطاء مضاد كولين لتجنب زيادة اللعاب وتشنج الحنجرة).`
+                            },
+                            {
+                                textEn: `Thiopental Sodium ${(4 * weight).toFixed(0)} mg IV (4 mg/kg)`,
+                                textAr: `ثيوبنتال الصوديوم ${(4 * weight).toFixed(0)} ملغ وريدياً`,
+                                correct: false,
+                                vitals: { hr: '126', bp: '105/68', spo2: '82% (Bronchospasm!)', icp: 'Reduced', airway: 'Severe Bronchospasm' },
+                                feedbackEn: 'Contraindicated! Severe asthma (along with Porphyria) is a direct contraindication for Thiopental Sodium.',
+                                feedbackAr: 'ممنوع! الربو الشديد (إلى جانب البورفيريا) هو مانع استعمال مباشر لثيوبنتال الصوديوم.'
+                            }
+                        ])
+                    };
+                },
+                // 3. Neuroanesthesia / Elevated ICP -> Thiopental or Propofol (Avoid Ketamine)
+                () => {
+                    const age = randInt(28, 60);
+                    const weight = randInt(60, 90);
+                    const isMale = Math.random() > 0.5;
+                    const name = isMale ? pickRandom(maleNames) : pickRandom(femaleNames);
+                    return {
+                        patientName: `${name} (${age} سنة)`,
+                        ageSex: `${age}Y / ${isMale ? 'Male' : 'Female'}`,
+                        weight: `${weight} kg`,
+                        surgery: 'Neurosurgery (↑ ICP)',
+                        asa: 'ASA III',
+                        baseline: { hr: '66', bp: '146/88', spo2: '98%', icp: 'Elevated (26 mmHg)', airway: 'Intact' },
+                        scenarioEn: `${age}-year-old patient (${weight} kg) with a brain tumor and elevated intracranial pressure (ICP) scheduled for neuroanesthesia (no porphyria, no asthma, normal BP).`,
+                        scenarioAr: `مريض عمره ${age} سنة (${weight} كغ) لديه ورم دماغي وارتفاع في الضغط داخل القحف (↑ ICP) مقبل على جراحة أعصاب (لا يعاني من البورفيريا أو الربو وضغطه مستقر).`,
+                        prompt: 'أي خيار يحقق حماية دماغية ويخفض ICP، وأي دواء يجب تجنبه؟',
+                        options: shuffleArray([
+                            {
+                                textEn: `Thiopental ${(3 * weight).toFixed(0)}–${(5 * weight).toFixed(0)} mg IV or Propofol ${(1.5 * weight).toFixed(0)}–${(2.5 * weight).toFixed(0)} mg IV (Avoid Ketamine)`,
+                                textAr: `ثيوبنتال أو بروبوفول (يخفضان CMRO₂ و ICP، وتجنب الكيتامين لأنه يرفع ICP)`,
+                                correct: true,
+                                vitals: { hr: '72', bp: '118/74', spo2: '99%', icp: 'Reduced (12 mmHg)', airway: 'Neuroprotected' },
+                                feedbackEn: 'Spot on! Both Propofol and Thiopental markedly decrease CMRO₂, CBF, and ICP (neuroprotective), whereas Ketamine increases CBF and ICP.',
+                                feedbackAr: 'إجابة دقيقة! كل من البروبوفول والثيوبنتال يخفضان معدل الأيض الدماغي والضغط داخل القحف (حماية دماغية)، بينما الكيتامين يرفع تدفق الدم والضغط داخل القحف.'
+                            },
+                            {
+                                textEn: `Ketamine ${(1.5 * weight).toFixed(0)} mg IV to boost cerebral blood flow`,
+                                textAr: `كيتامين ${(1.5 * weight).toFixed(0)} ملغ وريدياً`,
+                                correct: false,
+                                vitals: { hr: '104', bp: '164/98', spo2: '98%', icp: 'Dangerously ↑ (38 mmHg)', airway: 'Cerebral Herniation Risk' },
+                                feedbackEn: 'Contraindicated in elevated ICP! Ketamine increases cerebral blood flow (CBF) and intracranial pressure (ICP).',
+                                feedbackAr: 'ممنوع في ارتفاع ضغط الدماغ! الكيتامين يزيد تدفق الدم للدماغ ويرفع الضغط داخل القحف (ICP).'
+                            }
+                        ])
+                    };
+                },
+                // 4. Acute Intermittent Porphyria -> Propofol (Contraindication to Thiopental)
+                () => {
+                    const age = randInt(22, 42);
+                    const weight = randInt(52, 78);
+                    const isMale = Math.random() > 0.6;
+                    const name = isMale ? pickRandom(maleNames) : pickRandom(femaleNames);
+                    return {
+                        patientName: `${name} (${age} سنة)`,
+                        ageSex: `${age}Y / ${isMale ? 'Male' : 'Female'}`,
+                        weight: `${weight} kg`,
+                        surgery: 'Day-Case Surgery',
+                        asa: 'ASA II (Porphyria)',
+                        baseline: { hr: '80', bp: '120/76', spo2: '99%', icp: 'Normal', airway: 'Normal' },
+                        scenarioEn: `${age}-year-old patient (${weight} kg) diagnosed with Porphyria (no egg/soy allergy, hemodynamically stable) scheduled for short outpatient surgery with high risk of PONV.`,
+                        scenarioAr: `مريض عمره ${age} سنة (${weight} كغ) مصاب بمرض البورفيريا (Porphyria) وضغطه مستقر ولا يعاني من حساسية البيض أو الصويا، ومقبل على جراحة قصيرة.`,
+                        prompt: 'ما هو الخيار الآمن لبدء التخدير وتجنب أزمة البورفيريا القاتلة؟',
+                        options: shuffleArray([
+                            {
+                                textEn: `Propofol ${(1.5 * weight).toFixed(0)}–${(2.5 * weight).toFixed(0)} mg IV (1.5–2.5 mg/kg)`,
+                                textAr: `بروبوفول ${(1.5 * weight).toFixed(0)}–${(2.5 * weight).toFixed(0)} ملغ وريدياً (آمن في البورفيريا ومضاد للتقيؤ)`,
+                                correct: true,
+                                vitals: { hr: '74', bp: '108/68', spo2: '99%', icp: 'Normal', airway: 'Smooth Induction' },
+                                feedbackEn: 'Correct! Thiopental Sodium (a barbiturate) is strictly contraindicated in Porphyria. Propofol is safe, has rapid recovery, and possesses an anti-emetic effect.',
+                                feedbackAr: 'صحيح! ثيوبنتال الصوديوم (باربيتورات) ممنوع قطعياً في مرض البورفيريا، بينما البروبوفول آمن ويوفر إفاقة سريعة وتأثيراً مضاداً للتقيؤ.'
+                            },
+                            {
+                                textEn: `Thiopental Sodium ${(4 * weight).toFixed(0)} mg IV (4 mg/kg)`,
+                                textAr: `ثيوبنتال الصوديوم ${(4 * weight).toFixed(0)} ملغ وريدياً`,
+                                correct: false,
+                                vitals: { hr: '132', bp: '158/96', spo2: '96%', icp: 'Normal', airway: 'Acute Porphyric Crisis!' },
+                                feedbackEn: 'Contraindicated! Barbiturates (Thiopental Sodium) precipitate life-threatening attacks in patients with Porphyria.',
+                                feedbackAr: 'ممنوع قطعياً! الباربيتورات (ثيوبنتال الصوديوم) تحفز نوبات بورفيريا حادة ومهددة للحياة.'
+                            }
+                        ])
+                    };
+                }
+            ];
+
+            currentSimCase = pickRandom(archetypes)();
+
+            document.getElementById('simCaseTag').textContent = `LIVE CASE #${randInt(100, 999)}`;
+            document.getElementById('simPatientName').textContent = currentSimCase.patientName;
+            document.getElementById('simAgeSex').textContent = currentSimCase.ageSex;
+            document.getElementById('simWeight').textContent = currentSimCase.weight;
+            document.getElementById('simSurgeryType').textContent = currentSimCase.surgery;
+            document.getElementById('simASA').textContent = currentSimCase.asa;
+            document.getElementById('simScenarioEn').textContent = currentSimCase.scenarioEn;
+            document.getElementById('simScenarioAr').textContent = currentSimCase.scenarioAr;
+            document.getElementById('simQuestionPrompt').textContent = currentSimCase.prompt;
+
+            updateMonitor(currentSimCase.baseline, 'Pre-Induction (قبل الحقن)');
+            document.getElementById('simFeedbackPanel').classList.add('hidden');
+
+            const optsList = document.getElementById('simOptionsList');
+            optsList.innerHTML = currentSimCase.options.map((opt, idx) => `
+                <button onclick="evaluateSimOption(${idx})" id="sim-opt-${idx}" class="w-full text-right p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/60 hover:border-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all flex items-start gap-3 group">
+                    <span class="w-7 h-7 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 flex items-center justify-center text-xs font-extrabold text-slate-700 dark:text-slate-200 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-indigo-600 shrink-0 en-text">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <div class="flex-1">
+                        <div class="en-block text-sm font-bold text-slate-900 dark:text-white">${opt.textEn}</div>
+                        <div class="ar-explain text-xs text-slate-600 dark:text-slate-400 mt-0.5" style="${showArabic ? '' : 'display:none;'}">${opt.textAr}</div>
+                    </div>
+                </button>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function updateMonitor(vitals, statusText) {
+            document.getElementById('monHR').textContent = vitals.hr;
+            document.getElementById('monBP').textContent = vitals.bp;
+            document.getElementById('monSpO2').textContent = vitals.spo2;
+            document.getElementById('monICP').textContent = vitals.icp;
+            document.getElementById('monAirway').textContent = vitals.airway;
+            document.getElementById('monitorStatusBadge').textContent = statusText;
+        }
+
+        function evaluateSimOption(optIdx) {
+            if (!currentSimCase) return;
+            const opt = currentSimCase.options[optIdx];
+            updateMonitor(opt.vitals, opt.correct ? 'Optimal Induction ✓' : 'Complication Alert ⚠');
+
+            currentSimCase.options.forEach((o, i) => {
+                const btn = document.getElementById(`sim-opt-${i}`);
+                btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/40', 'border-rose-500', 'bg-rose-50', 'dark:bg-rose-950/40');
+                if (i === optIdx) {
+                    btn.classList.add(o.correct ? 'border-emerald-500' : 'border-rose-500', o.correct ? 'bg-emerald-50' : 'bg-rose-50', o.correct ? 'dark:bg-emerald-950/40' : 'dark:bg-rose-950/40');
+                }
+            });
+
+            if (opt.correct && !currentSimCase.scored) {
+                currentSimCase.scored = true;
+                simSolvedCount++;
+                document.getElementById('simScoreBadge').textContent = simSolvedCount;
+            }
+
+            const panel = document.getElementById('simFeedbackPanel');
+            const iconBox = document.getElementById('simFeedbackIcon');
+            panel.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'dark:bg-emerald-950/30', 'dark:border-emerald-800', 'bg-rose-50', 'border-rose-200', 'dark:bg-rose-950/30', 'dark:border-rose-800');
+
+            if (opt.correct) {
+                panel.classList.add('bg-emerald-50', 'border-emerald-200', 'dark:bg-emerald-950/30', 'dark:border-emerald-800');
+                iconBox.className = 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-emerald-500 text-white';
+                iconBox.innerHTML = '<i data-lucide="check-circle-2" class="w-6 h-6"></i>';
+                document.getElementById('simFeedbackTitle').textContent = 'قرار تخديري ممتاز وآمن!';
+                document.getElementById('simFeedbackTitle').className = 'text-base sm:text-lg font-extrabold text-emerald-800 dark:text-emerald-300';
+            } else {
+                panel.classList.add('bg-rose-50', 'border-rose-200', 'dark:bg-rose-950/30', 'dark:border-rose-800');
+                iconBox.className = 'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-rose-500 text-white';
+                iconBox.innerHTML = '<i data-lucide="alert-octagon" class="w-6 h-6"></i>';
+                document.getElementById('simFeedbackTitle').textContent = 'تحذير سريري — راجع موانع الاستعمال!';
+                document.getElementById('simFeedbackTitle').className = 'text-base sm:text-lg font-extrabold text-rose-800 dark:text-rose-300';
+            }
+
+            document.getElementById('simFeedbackEn').textContent = opt.feedbackEn;
+            document.getElementById('simFeedbackAr').textContent = opt.feedbackAr;
+            lucide.createIcons();
+        }
+
+        // =========================================================
+        // 5. REAL-TIME PROCEDURAL QUESTION ENGINE (ZERO STATIC LIST)
+        // =========================================================
+        function buildMCQ(qEn, qAr, correctText, wrongTexts, expEn, expAr) {
+            const allOptions = shuffleArray([
+                { text: correctText, isCorrect: true },
+                ...wrongTexts.map(w => ({ text: w, isCorrect: false }))
+            ]);
+            return {
+                uid: `${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+                qEn,
+                qAr,
+                options: allOptions,
+                expEn,
+                expAr
+            };
+        }
+
+        const questionGenerators = [
+            // 1. Dynamic Weight-Based Dosage Math
+            () => {
+                const choice = randInt(1, 5);
+                const weight = randInt(44, 96);
+                if (choice === 1) {
+                    return buildMCQ(
+                        pickRandom([
+                            `Calculate the adult IV induction dose range of Propofol (1.5–2.5 mg/kg) for a ${weight}-kg patient:`,
+                            `A ${weight}-kg adult is scheduled for general anesthesia induction with Propofol. What is the recommended dose range?`
+                        ]),
+                        `احسب مدى جرعة بدء التخدير الوريدية للبالغين لدواء بروبوفول (1.5–2.5 ملغ/كغ) لمريض وزنه ${weight} كغ:`,
+                        `${(1.5 * weight).toFixed(0)} – ${(2.5 * weight).toFixed(0)} mg IV`,
+                        [
+                            `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                            `${(0.2 * weight).toFixed(1)} – ${(0.3 * weight).toFixed(1)} mg IV`,
+                            `${(100 * weight).toFixed(0)} – ${(200 * weight).toFixed(0)} mg IV`
+                        ],
+                        `Propofol adult induction dose is 1.5–2.5 mg/kg IV (Maintenance: 100–200 µg/kg/min; Sedation: 25–75 µg/kg/min).`,
+                        `جرعة بدء التخدير بالبروبوفول للبالغين هي 1.5–2.5 ملغ/كغ وريدياً.`
+                    );
+                } else if (choice === 2) {
+                    return buildMCQ(
+                        `What is the IV induction dose range of Thiopental Sodium (3–5 mg/kg) for a patient weighing ${weight} kg?`,
+                        `ما هو مدى جرعة بدء التخدير الوريدية لدواء ثيوبنتال الصوديوم (3–5 ملغ/كغ) لمريض يزن ${weight} كغ؟`,
+                        `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                        [
+                            `${(1.5 * weight).toFixed(0)} – ${(2.5 * weight).toFixed(0)} mg IV`,
+                            `${(0.2 * weight).toFixed(1)} – ${(0.3 * weight).toFixed(1)} mg IV`,
+                            `${(0.02 * weight).toFixed(1)} – ${(0.1 * weight).toFixed(1)} mg IV`
+                        ],
+                        `Thiopental Sodium induction dose is 3–5 mg/kg IV with rapid onset (20–30 seconds).`,
+                        `جرعة بدء التخدير بثيوبنتال الصوديوم هي 3–5 ملغ/كغ وريدياً.`
+                    );
+                } else if (choice === 3) {
+                    return buildMCQ(
+                        `A hemodynamically unstable patient weighing ${weight} kg requires Etomidate (0.2–0.3 mg/kg IV) for induction. Calculate the dose:`,
+                        `مريض غير مستقر هيموديناميكياً يزن ${weight} كغ يحتاج إلى إيتوميديت (0.2–0.3 ملغ/كغ وريدياً) لبدء التخدير؛ احسب الجرعة:`,
+                        `${(0.2 * weight).toFixed(1)} – ${(0.3 * weight).toFixed(1)} mg IV`,
+                        [
+                            `${(1.5 * weight).toFixed(0)} – ${(2.5 * weight).toFixed(0)} mg IV`,
+                            `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                            `${(1 * weight).toFixed(0)} – ${(2 * weight).toFixed(0)} mg IV`
+                        ],
+                        `Etomidate induction dose is 0.2–0.3 mg/kg IV.`,
+                        `جرعة بدء التخدير بالإيتوميديت هي 0.2–0.3 ملغ/كغ وريدياً.`
+                    );
+                } else if (choice === 4) {
+                    const isAnalgesia = Math.random() > 0.5;
+                    if (isAnalgesia) {
+                        return buildMCQ(
+                            `Calculate the intravenous analgesia dose range of Ketamine (0.1–0.5 mg/kg IV) for a ${weight}-kg patient:`,
+                            `احسب مدى جرعة التسكين الوريدية للكيتامين (0.1–0.5 ملغ/كغ) لمريض وزنه ${weight} كغ:`,
+                            `${(0.1 * weight).toFixed(1)} – ${(0.5 * weight).toFixed(1)} mg IV`,
+                            [
+                                `${(1 * weight).toFixed(0)} – ${(2 * weight).toFixed(0)} mg IV`,
+                                `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                                `${(0.02 * weight).toFixed(1)} – ${(0.1 * weight).toFixed(1)} mg IV`
+                            ],
+                            `Ketamine IV analgesia dose is 0.1–0.5 mg/kg, whereas IV induction dose is 1–2 mg/kg.`,
+                            `جرعة التسكين الوريدية للكيتامين هي 0.1–0.5 ملغ/كغ، بينما جرعة بدء التخدير هي 1–2 ملغ/كغ.`
+                        );
+                    } else {
+                        return buildMCQ(
+                            `Calculate the intravenous induction dose range of Ketamine (1–2 mg/kg IV) for a ${weight}-kg patient:`,
+                            `احسب مدى جرعة بدء التخدير الوريدية للكيتامين (1–2 ملغ/كغ) لمريض وزنه ${weight} كغ:`,
+                            `${(1 * weight).toFixed(0)} – ${(2 * weight).toFixed(0)} mg IV`,
+                            [
+                                `${(0.1 * weight).toFixed(1)} – ${(0.5 * weight).toFixed(1)} mg IV`,
+                                `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                                `${(0.2 * weight).toFixed(1)} – ${(0.3 * weight).toFixed(1)} mg IV`
+                            ],
+                            `Ketamine IV induction dose is 1–2 mg/kg.`,
+                            `جرعة بدء التخدير الوريدية للكيتامين هي 1–2 ملغ/كغ.`
+                        );
+                    }
+                } else {
+                    return buildMCQ(
+                        `What is the IV sedation dose range of Midazolam (0.02–0.1 mg/kg IV) for a ${weight}-kg patient?`,
+                        `ما هو مدى جرعة التركين الوريدية لدواء ميدازولام (0.02–0.1 ملغ/كغ) لمريض وزنه ${weight} كغ؟`,
+                        `${(0.02 * weight).toFixed(1)} – ${(0.1 * weight).toFixed(1)} mg IV`,
+                        [
+                            `${(1.5 * weight).toFixed(0)} – ${(2.5 * weight).toFixed(0)} mg IV`,
+                            `${(3 * weight).toFixed(0)} – ${(5 * weight).toFixed(0)} mg IV`,
+                            `${(0.2 * weight).toFixed(1)} – ${(0.3 * weight).toFixed(1)} mg IV`
+                        ],
+                        `Midazolam sedation dose is 0.02–0.1 mg/kg IV, and adult premedication dose is 1–2 mg IV.`,
+                        `جرعة التركين الوريدية للميدازولام هي 0.02–0.1 ملغ/كغ، وجرعة التحضير للبالغين هي 1–2 ملغ وريدياً.`
+                    );
+                }
+            },
+
+            // 2. Lecture Core Questions (Q1-Q7 Rephrased) + Classification + Ideal Properties
+            () => {
+                const pool = [
+                    () => buildMCQ(
+                        pickRandom([
+                            'Intravenous anesthetic agents are primarily characterized by:',
+                            'Which pharmacokinetic profile best defines intravenous anesthetic agents?'
+                        ]),
+                        'تتميز أدوية التخدير الوريدية بشكل أساسي بـ:',
+                        'Rapid onset and relatively short duration of action',
+                        [
+                            'Delayed onset and long duration of action',
+                            'Oral administration only with slow redistribution',
+                            'Exclusive analgesic effect without hypnosis or amnesia'
+                        ],
+                        'IV anesthetic agents produce hypnosis, sedation, anesthesia, and/or amnesia with rapid onset and relatively short duration of action.',
+                        'أدوية التخدير الوريدية تُحدث التنويم والتركين والتخدير وفقدان الذاكرة ببدء سريع ومدة تأثير قصيرة نسبياً.'
+                    ),
+                    () => buildMCQ(
+                        pickRandom([
+                            'Which of the following drugs is classified as a hypnotic / induction agent?',
+                            'Select the agent belonging to the Hypnotic / Induction Agents class:'
+                        ]),
+                        'أي من الأدوية التالية يُصنف كعامل تنويم / بدء تخدير (Hypnotic / Induction Agent)؟',
+                        'Propofol (along with Thiopental Sodium and Etomidate)',
+                        ['Fentanyl', 'Morphine', 'Pethidine'],
+                        'Hypnotic/Induction agents include Propofol, Thiopental Sodium, and Etomidate.',
+                        'تشمل عوامل التنويم وبدء التخدير: بروبوفول، ثيوبنتال الصوديوم، وإيتوميديت.'
+                    ),
+                    () => buildMCQ(
+                        pickRandom([
+                            'Which drug is classified as a dissociative intravenous anesthetic agent?',
+                            'Identify the phencyclidine derivative that produces dissociative anesthesia:'
+                        ]),
+                        'ما هو المخدر الوريدي الانفصالي (Dissociative intravenous anesthetic agent)؟',
+                        'Ketamine',
+                        ['Propofol', 'Thiopental', 'Etomidate'],
+                        'Ketamine is a phencyclidine derivative and NMDA receptor antagonist producing dissociative anesthesia.',
+                        'الكيتامين مشتق فينسيكليدين ومضاد لمستقبلات NMDA يُحدث التخدير الانفصالي.'
+                    ),
+                    () => buildMCQ(
+                        pickRandom([
+                            'An ideal intravenous anesthetic agent should possess all of the following properties EXCEPT:',
+                            'Which characteristic is NOT an ideal property of an intravenous anesthetic agent?'
+                        ]),
+                        'ينبغي أن يمتلك المخدر الوريدي المثالي جميع الخصائص التالية ما عدا (EXCEPT):',
+                        'Toxic active metabolites',
+                        [
+                            'Rapid onset of action',
+                            'Minimal cardiovascular and respiratory depression',
+                            'High therapeutic index and short duration'
+                        ],
+                        'Ideal properties: rapid onset, short duration & rapid recovery, minimal CV/respiratory depression, NO toxic metabolites, and high therapeutic index.',
+                        'الخصائص المثالية تتطلب عدم وجود مستقلبات سامة (No toxic metabolites).'
+                    ),
+                    () => buildMCQ(
+                        pickRandom([
+                            'Propofol primarily produces anesthesia by acting on which receptor in the CNS?',
+                            'Which receptor mediates Propofol-induced neuronal hyperpolarization via increased chloride conductance?'
+                        ]),
+                        'يُحدث البروبوفول التخدير بشكل أساسي عبر العمل على أي مستقبل في الجهاز العصبي المركزي؟',
+                        'GABA-A receptor',
+                        ['NMDA receptor (primary agonist)', 'Dopamine D2 receptor', 'Alpha-1 adrenergic receptor'],
+                        'Propofol primarily acts on GABA-A receptors in the CNS, increasing chloride ion conductance and causing neuronal hyperpolarization.',
+                        'يعمل البروبوفول أساساً على مستقبلات GABA-A في الدماغ لزيادة نفاذية أيونات الكلوريد.'
+                    )
+                ];
+                return pickRandom(pool)();
+            },
+
+            // 3. Mechanism of Action Nuances & Chemical Classes
+            () => {
+                const items = [
+                    () => buildMCQ(
+                        'How do Barbiturates (Thiopental) differ from Benzodiazepines (Midazolam) at the GABA-A receptor chloride channel?',
+                        'كيف يختلف الثيوبنتال (باربيتورات) عن الميدازولام (بنزوديازيبين) في تأثيره على قناة الكلوريد لمستقبل GABA-A؟',
+                        'Thiopental prolongs the DURATION of chloride channel opening, whereas Benzodiazepines increase the FREQUENCY of opening',
+                        [
+                            'Thiopental antagonizes NMDA receptors, whereas Midazolam blocks sodium channels',
+                            'Thiopental increases opening frequency, whereas Benzodiazepines prolong duration',
+                            'Thiopental inhibits 11β-hydroxylase, whereas Midazolam is an alkyl phenol'
+                        ],
+                        'Thiopental prolongs the duration of chloride channel opening; Benzodiazepines enhance GABA-A affinity and increase the frequency of chloride channel opening.',
+                        'الثيوبنتال يطيل مدة (Duration) انفتاح قناة الكلوريد، بينما البنزوديازيبينات تزيد تكرار (Frequency) انفتاحها.'
+                    ),
+                    () => buildMCQ(
+                        'Which IV induction agent inhibits 11β-hydroxylase and consequently suppresses cortisol synthesis?',
+                        'أي دواء تخدير وريدي يثبط إنزيم 11β-hydroxylase وبالتالي يثبط تصنيع الكورتيزول؟',
+                        'Etomidate',
+                        ['Propofol', 'Ketamine', 'Thiopental Sodium'],
+                        'Etomidate (an imidazole derivative) inhibits 11β-hydroxylase → suppresses cortisol synthesis.',
+                        'الإيتوميديت (مشتق إيميدازول) يثبط إنزيم 11β-hydroxylase مما يثبط تصنيع الكورتيزول.'
+                    ),
+                    () => buildMCQ(
+                        'Match the correct chemical class: Propofol is an _____, while Etomidate is an _____:',
+                        'اختر التصنيف الكيميائي الصحيح: البروبوفول هو _____ بينما الإيتوميديت هو _____:',
+                        'Alkyl phenol derivative ; Imidazole derivative',
+                        [
+                            'Barbiturate ; Phencyclidine derivative',
+                            'Imidazole derivative ; Alkyl phenol derivative',
+                            'Phencyclidine derivative ; Barbiturate'
+                        ],
+                        'Propofol = Alkyl phenol derivative; Thiopental = Barbiturate; Etomidate = Imidazole derivative; Ketamine = Phencyclidine derivative.',
+                        'البروبوفول مشتق ألكيل فينول، الثيوبنتال باربيتورات، الإيتوميديت مشتق إيميدازول، والكيتامين مشتق فينسيكليدين.'
+                    ),
+                    () => buildMCQ(
+                        'Ketamine is metabolized in the liver into which active metabolite?',
+                        'يستقلب الكيتامين في الكبد إلى أي مستقلب نشط (Active metabolite)؟',
+                        'Norketamine',
+                        ['Inactive glucuronide metabolites only', '11β-hydroxylase', 'Propofol-phenol'],
+                        'Ketamine undergoes hepatic metabolism to norketamine (an active metabolite).',
+                        'يستقلب الكيتامين في الكبد إلى نوركيتامين (Norketamine) وهو مستقلب نشط.'
+                    )
+                ];
+                return pickRandom(items)();
+            },
+
+            // 4. Organ Systems (CNS, CVS, Resp, GIT, Renal, Hepatic) & Contraindications
+            () => {
+                const sysQs = [
+                    () => buildMCQ(
+                        'Which IV anesthetic increases salivation (risking laryngospasm, so an anticholinergic is recommended) and acts as a powerful bronchodilator?',
+                        'أي مخدر وريدي يزيد إفراز اللعاب (مما قد يسبب تشنج الحنجرة ويُنصح بإعطاء مضاد كولين معه) ويعمل كموسع قصبات قوي؟',
+                        'Ketamine',
+                        ['Propofol', 'Thiopental Sodium', 'Etomidate'],
+                        'Ketamine preserves airway reflexes, is a powerful bronchodilator (useful in asthma), and increases salivation → risk of laryngospasm.',
+                        'الكيتامين موسع قصبات قوي ويزيد اللعاب مما قد يسبب تشنج الحنجرة لذا يُنصح بإعطاء مضاد كولين.'
+                    ),
+                    () => buildMCQ(
+                        'In which patient population can Ketamine paradoxically act as a myocardial depressant?',
+                        'في أي فئة من المرضى يمكن أن يعمل الكيتامين بشكل متناقض كمثبط لعضلة القلب؟',
+                        'Catecholamine-depleted patients',
+                        ['Healthy pediatric patients', 'Patients with mild bronchial asthma', 'Patients with egg or soy allergy'],
+                        'Ketamine normally stimulates SNS (↑ HR, ↑ BP, ↑ CO), but acts as a myocardial depressant in catecholamine-depleted patients.',
+                        'الكيتامين ينشط الجهاز الودي عادةً، لكنه يثبط عضلة القلب في المرضى المستنفدين للكاتيكولامينات.'
+                    ),
+                    () => buildMCQ(
+                        'Which IV anesthetic agent possesses a direct anti-emetic effect on the gastrointestinal system?',
+                        'أي مخدر وريدي يمتلك تأثيراً مضاداً للغثيان والتقيؤ (Anti-emetic effect)؟',
+                        'Propofol',
+                        ['Ketamine', 'Thiopental Sodium', 'Etomidate'],
+                        'On the GIT, Propofol has an anti-emetic effect, whereas Ketamine increases salivation.',
+                        'البروبوفول يمتلك تأثيراً مضاداً للتقيؤ (Anti-emetic effect).'
+                    ),
+                    () => buildMCQ(
+                        'What are the two main contraindications listed for Thiopental Sodium?',
+                        'ما هما مانعا الاستعمال الرئيسيان المذكوران لدواء ثيوبنتال الصوديوم؟',
+                        'Porphyria and Severe asthma',
+                        [
+                            'Allergy to egg or soy and Hemodynamic instability',
+                            'Elevated ICP and Convulsions',
+                            'Trauma and Pediatric surgery'
+                        ],
+                        'Thiopental Sodium is contraindicated in Porphyria and Severe asthma.',
+                        'موانع استعمال ثيوبنتال الصوديوم هما البورفيريا والربو الشديد.'
+                    ),
+                    () => buildMCQ(
+                        'Why does Propofol cause minimal reflex tachycardia despite decreasing blood pressure?',
+                        'لماذا يسبب البروبوفول تسرع قلب انعكاسي ضئيل جداً رغم تسببه في خفض ضغط الدم؟',
+                        'Because it blunts the baroreceptor reflex',
+                        [
+                            'Because it strongly stimulates the sympathetic nervous system',
+                            'Because it inhibits 11β-hydroxylase',
+                            'Because it preserves sympathetic tone and baroreceptor reflexes'
+                        ],
+                        'Propofol decreases SVR, myocardial contractility, and BP, and blunts the baroreceptor reflex → minimal tachycardia.',
+                        'البروبوفول يثبط منعكس مستقبلات الضغط (Blunts baroreceptor reflex) فلا يحدث تسرع قلب انعكاسي.'
+                    ),
+                    () => buildMCQ(
+                        'Which IV anesthetic accumulates in the hepatic system with repeated doses?',
+                        'أي مخدر وريدي يتراكم في الجسم عند إعطاء جرعات متكررة (Accumulates with repeated doses)؟',
+                        'Thiopental',
+                        ['Propofol', 'Etomidate', 'Remifentanil'],
+                        'Hepatic system: Propofol has high hepatic clearance, Thiopental accumulates with repeated doses, and Ketamine produces norketamine.',
+                        'الثيوبنتال يتراكم في الجسم عند تكرار الجرعات، بينما البروبوفول ذو تصفية كبدية عالية.'
+                    )
+                ];
+                return pickRandom(sysQs)();
+            }
+        ];
+
+        function generateFreshExam() {
+            const count = parseInt(document.getElementById('questionCountSelect').value, 10) || 15;
+            quizAnswers = {};
+            activeQuestions = [];
+
+            const sessionCode = `${new Date().getHours()}${new Date().getMinutes()}-${randInt(1000, 9999)}`;
+            document.getElementById('sessionSeedBadge').textContent = `LIVE SEED: #${sessionCode}`;
+
+            const seenQuestions = new Set();
+            let safety = 0;
+
+            while (activeQuestions.length < count && safety < 250) {
+                safety++;
+                const qObj = pickRandom(questionGenerators)();
+                if (!seenQuestions.has(qObj.qEn)) {
+                    seenQuestions.add(qObj.qEn);
+                    activeQuestions.push(qObj);
+                }
+            }
+
+            updateQuizScore();
+            renderQuiz();
+        }
+
+        // =========================================================
+        // 6. UI RENDERING & CONTROLS
+        // =========================================================
+        function init() {
+            renderFoundations();
+            renderDrugs();
+            renderSystems();
+            generateProceduralPatient();
+            generateFreshExam();
+            lucide.createIcons();
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            const icon = document.getElementById('themeIcon');
+            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+
+        function toggleArabicMode() {
+            showArabic = !showArabic;
+            document.getElementById('arabicBtnLabel').textContent = showArabic ? 'إخفاء الشرح العربي' : 'إظهار الشرح العربي';
+            document.querySelectorAll('.ar-explain').forEach(el => {
+                el.style.display = showArabic ? '' : 'none';
+            });
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+            activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+            lucide.createIcons();
+        }
+
+        function renderFoundations() {
+            document.getElementById('classificationGrid').innerHTML = classificationsData.map(c => `
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-${c.color}-50 text-${c.color}-700 dark:bg-${c.color}-950 dark:text-${c.color}-300 en-text">CLASS ${c.num}</span>
+                            <i data-lucide="${c.icon}" class="w-5 h-5 text-${c.color}-600 dark:text-${c.color}-400"></i>
+                        </div>
+                        <h3 class="en-block text-base font-extrabold text-slate-900 dark:text-white">${c.enTitle}</h3>
+                        <p class="en-block text-xs sm:text-sm font-bold text-${c.color}-700 dark:text-${c.color}-400 mt-1.5">${c.enDrugs}</p>
+                    </div>
+                    <div class="ar-explain mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <div class="text-xs font-bold text-slate-800 dark:text-slate-200">${c.arTitle}</div>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">${c.arDesc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('idealPropertiesGrid').innerHTML = idealPropertiesData.map(p => `
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center text-xs font-extrabold en-text">#${p.num}</span>
+                            <i data-lucide="${p.icon}" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+                        </div>
+                        <p class="en-block text-sm font-extrabold text-slate-900 dark:text-white leading-snug">${p.en}</p>
+                    </div>
+                    <p class="ar-explain text-xs text-slate-600 dark:text-slate-400 mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800 leading-relaxed">${p.ar}</p>
+                </div>
+            `).join('');
+        }
+
+        function setQuickWeight(w) {
+            document.getElementById('patientWeightInput').value = w;
+            renderDrugs();
+        }
+
+        function filterDrug(id) {
+            currentDrugFilter = id;
+            document.querySelectorAll('.drug-pill').forEach(btn => {
+                const isSelected = btn.getAttribute('data-drug') === id;
+                btn.className = isSelected
+                    ? 'drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white dark:bg-indigo-600 whitespace-nowrap transition-all shadow-sm'
+                    : 'drug-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all';
+            });
+            renderDrugs();
+        }
+
+        function renderDrugs() {
+            const weight = parseFloat(document.getElementById('patientWeightInput').value) || 70;
+            const query = document.getElementById('drugSearchInput').value.trim().toLowerCase();
+            const container = document.getElementById('drugsContainer');
+
+            const filtered = drugsData.filter(d => {
+                if (currentDrugFilter !== 'ALL' && d.id !== currentDrugFilter) return false;
+                if (!query) return true;
+                const haystack = `${d.name} ${d.arName} ${d.chemClass} ${d.rows.map(r => r.k + ' ' + r.v + ' ' + r.ar).join(' ')}`.toLowerCase();
+                return haystack.includes(query);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800"><p class="text-slate-500 font-bold">لا توجد نتائج مطابقة لبحثك "${query}"</p></div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(drug => `
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-4 sm:p-5 bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 space-y-2.5">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-${drug.color}-100 text-${drug.color}-800 dark:bg-${drug.color}-950 dark:text-${drug.color}-300 en-text">
+                                    ${drug.chemClass}
+                                </span>
+                                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white mt-1 en-block">${drug.name}</h3>
+                                <p class="ar-explain text-xs font-bold text-slate-500 dark:text-slate-400" style="${showArabic ? '' : 'display:none;'}">${drug.arName}</p>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-950 border border-indigo-200 dark:border-indigo-800/80 px-3 py-2 rounded-xl">
+                            <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 block">الجرعة المحسوبة لوزن ${weight} kg:</span>
+                            <span class="text-xs font-extrabold text-slate-800 dark:text-slate-100 en-block mt-0.5">${drug.doseCalc(weight)}</span>
+                        </div>
+                    </div>
+
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800/80 text-sm flex-1">
+                        ${drug.rows.map(row => `
+                            <div class="p-3.5 sm:px-5 hover:bg-slate-50/70 dark:hover:bg-slate-800/30 transition-colors">
+                                <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                                    <span class="text-xs font-extrabold uppercase tracking-wide text-${drug.color}-700 dark:text-${drug.color}-400 en-text shrink-0 sm:w-44">
+                                        ${row.k}
+                                    </span>
+                                    <div class="flex-1">
+                                        <div class="en-block text-slate-800 dark:text-slate-100 font-medium leading-relaxed">${row.v}</div>
+                                        <div class="ar-explain text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed bg-slate-50 dark:bg-slate-950/40 px-2.5 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800/60" style="${showArabic ? '' : 'display:none;'}">
+                                            ${row.ar}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function filterSystem(sysId) {
+            currentSystemFilter = sysId;
+            document.querySelectorAll('.sys-pill').forEach(btn => {
+                const isSelected = btn.getAttribute('data-sys') === sysId;
+                btn.className = isSelected
+                    ? 'sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white dark:bg-indigo-600 whitespace-nowrap transition-all shadow-sm'
+                    : 'sys-pill px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap transition-all';
+            });
+            renderSystems();
+        }
+
+        function renderSystems() {
+            const container = document.getElementById('systemsContainer');
+            const filtered = systemsData.filter(s => currentSystemFilter === 'ALL' || s.id === currentSystemFilter);
+
+            container.innerHTML = filtered.map(sys => `
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-4 sm:p-5 bg-${sys.color}-50/60 dark:bg-${sys.color}-950/30 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-${sys.color}-600 text-white flex items-center justify-center shrink-0">
+                            <i data-lucide="${sys.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="en-block text-base font-extrabold text-slate-900 dark:text-white">${sys.enTitle}</h3>
+                            <p class="ar-explain text-xs font-bold text-${sys.color}-700 dark:text-${sys.color}-400" style="${showArabic ? '' : 'display:none;'}">${sys.arTitle}</p>
+                        </div>
+                    </div>
+
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800/80 flex-1">
+                        ${sys.items.map(it => `
+                            <div class="p-3.5 sm:px-5">
+                                <div class="en-block">
+                                    <span class="inline-block text-xs font-extrabold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 mb-1">${it.drug}</span>
+                                    <p class="text-sm text-slate-800 dark:text-slate-100 font-medium leading-relaxed">${it.en}</p>
+                                </div>
+                                <p class="ar-explain text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed" style="${showArabic ? '' : 'display:none;'}">${it.ar}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quizQuestionsContainer');
+            container.innerHTML = activeQuestions.map((q, qIdx) => {
+                const userAns = quizAnswers[q.uid];
+                const isAnswered = userAns !== undefined;
+
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300 text-xs font-extrabold en-text shrink-0">
+                                Q${qIdx + 1}
+                            </span>
+                            <div class="space-y-1 flex-1">
+                                <h3 class="en-block text-base font-extrabold text-slate-900 dark:text-white">${q.qEn}</h3>
+                                <p class="ar-explain text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-semibold" style="${showArabic ? '' : 'display:none;'}">${q.qAr}</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-2.5 en-block">
+                            ${q.options.map((opt, idx) => {
+                                const letter = String.fromCharCode(65 + idx);
+                                let btnStyle = 'border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 hover:border-indigo-400';
+                                if (isAnswered) {
+                                    if (opt.isCorrect) {
+                                        btnStyle = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 font-bold';
+                                    } else if (idx === userAns) {
+                                        btnStyle = 'border-rose-500 bg-rose-50 dark:bg-rose-950/50 text-rose-900 dark:text-rose-200';
+                                    } else {
+                                        btnStyle = 'border-slate-200 dark:border-slate-800 opacity-60';
+                                    }
+                                }
+                                return `
+                                    <button onclick="answerQuiz('${q.uid}', ${idx})" class="w-full text-left px-4 py-3 rounded-xl border text-sm transition-all flex items-center justify-between gap-2 ${btnStyle}">
+                                        <span><strong>${letter}.</strong> ${opt.text}</span>
+                                        ${isAnswered && opt.isCorrect ? '<span class="text-emerald-600 font-extrabold shrink-0">✓</span>' : ''}
+                                        ${isAnswered && idx === userAns && !opt.isCorrect ? '<span class="text-rose-600 font-extrabold shrink-0">✗</span>' : ''}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        ${isAnswered ? `
+                            <div class="p-3.5 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/60 space-y-1">
+                                <div class="en-block text-xs sm:text-sm font-semibold text-indigo-900 dark:text-indigo-200">${q.expEn}</div>
+                                <div class="ar-explain text-xs text-slate-700 dark:text-slate-300" style="${showArabic ? '' : 'display:none;'}">${q.expAr}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function answerQuiz(uid, optIdx) {
+            quizAnswers[uid] = optIdx;
+            updateQuizScore();
+            renderQuiz();
+        }
+
+        function updateQuizScore() {
+            let score = 0;
+            activeQuestions.forEach(q => {
+                const chosen = quizAnswers[q.uid];
+                if (chosen !== undefined && q.options[chosen] && q.options[chosen].isCorrect) {
+                    score++;
+                }
+            });
+            document.getElementById('quizScoreDisplay').textContent = `${score} / ${activeQuestions.length}`;
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
